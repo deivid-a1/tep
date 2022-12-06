@@ -1,34 +1,52 @@
-#include <iostream>
-#include <vector>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-vector<int, pair<int, string>> vet;
+class No
+{
+    public:
+        int prioridade, frequencia, tempo;
+        string name;
+        No(int p, int f, int t, string n)
+        {
+            prioridade = p;
+            frequencia = f;
+            tempo = t;
+            name = n;
+        }
+};
+
+bool operator<(const No &n1, const No &n2)
+{
+	bool diffTime = n1.tempo > n2.tempo;
+	bool diffPriority = n1.prioridade > n2.prioridade;
+	return (n1.tempo == n2.tempo) ? diffPriority : diffTime;
+}
+
 
 int main()
 {
-    int T, N, K;
-    pair<int, string> par;
-
+    int T, N, K, number;
+    string name;
     cin >> T;
 
-    for(int k = 0; k < T ; k++)
+    while(T--)
     {
+        priority_queue<No> pq;
         cin >> N >> K;
         
         for(int i = 0; i < N; i++)
         {
-            cin>> par.second >> par.first;
-            
-            vet.push_back(par);
+            cin >> name >> number;
+            pq.push(No(i, number, number, name));
+
         }
         
-        for(int t = 0, i = 0; t<K; t++, i++)
+        for (int i = 0; i < K; i++)
         {
-            if(i%N == 0) i = 0; 
-
-            cout << vet[i].first <<' '<< vet[i].second << endl;
-            vet[i].first += vet[i].first;
+            No no = pq.top(); pq.pop();
+            cout << no.tempo << ' ' << no.name << endl;
+            pq.push(No(no.prioridade, no.frequencia, no.tempo + no.frequencia, no.name));
         }
     }
 
